@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="flex h-screen bg-gray-100">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md flex flex-col justify-between">
+        <div>
+            <div class="p-6 text-xl font-bold border-b">
+                Witaj ponownie, {{ user.username }}
+            </div>
+            <nav class="p-4 space-y-2">
+                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Panel Główny</span>
+                </a>
+                <a href="/sites" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                    <i data-lucide="folder"></i>
+                    <span>Twoje Strony</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                    <i data-lucide="settings"></i>
+                    <span>Ustawienia</span>
+                </a>
+                <!-- Dodaj więcej linków według potrzeb -->
+            </nav>
+        </div>
+        <div class="p-4 border-t">
+            <a href="{{ url_for('auth.logout') }}" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
+                <i data-lucide="log-out"></i>
+                <span>Wyloguj</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Główna zawartość -->
+    <main class="flex-1 p-8">
+        <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+
+        <!-- Przykładowe puste elementy -->
+        <div class="grid grid-cols-3 gap-4">
+            <div class="bg-white rounded-lg shadow p-4 h-40">Element 1</div>
+            <div class="bg-white rounded-lg shadow p-4 h-40">Element 2</div>
+            <div class="bg-white rounded-lg shadow p-4 h-40">Element 3</div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
