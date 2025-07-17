@@ -6,6 +6,8 @@ from extensions import db, login_manager
 from models import User, Site
 from auth import auth_bp
 from sites import sites_bp
+from dashboard import dashboard_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -19,16 +21,11 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(sites_bp)
+    app.register_blueprint(dashboard_bp)
 
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-
-    @app.route('/dashboard')
-    @login_required
-    def dashboard():
-        return render_template('dashboard.html', user=current_user)
-
 
     @app.route("/")
     def home():

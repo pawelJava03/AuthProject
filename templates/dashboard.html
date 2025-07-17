@@ -4,18 +4,27 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="flex h-screen bg-gray-100">
+<body class="bg-gray-100">
 
+<!-- Hamburger -->
+<div class="md:hidden p-4">
+    <button id="menuToggle" class="text-gray-700 focus:outline-none">
+        <i data-lucide="menu"></i>
+    </button>
+</div>
+
+<div class="flex h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-md flex flex-col justify-between">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:static md:inset-0 transition-transform duration-300 ease-in-out z-50 h-screen overflow-y-auto">
         <div>
             <div class="p-6 text-xl font-bold border-b">
                 Witaj ponownie, {{ user.username }}
             </div>
             <nav class="p-4 space-y-2">
-                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                <a href="/dashboard" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
                     <i data-lucide="layout-dashboard"></i>
                     <span>Panel Główny</span>
                 </a>
@@ -27,10 +36,9 @@
                     <i data-lucide="settings"></i>
                     <span>Ustawienia</span>
                 </a>
-                <!-- Dodaj więcej linków według potrzeb -->
             </nav>
         </div>
-        <div class="p-4 border-t">
+        <div class="p-4 border-t mt-auto">
             <a href="{{ url_for('auth.logout') }}" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
                 <i data-lucide="log-out"></i>
                 <span>Wyloguj</span>
@@ -38,21 +46,114 @@
         </div>
     </aside>
 
-    <!-- Główna zawartość -->
-    <main class="flex-1 p-8">
-        <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+    <!-- Main content -->
+    <main class="flex-1 p-6 space-y-6 overflow-y-auto">
+        <h1 class="text-2xl font-bold">Dashboard</h1>
 
-        <!-- Przykładowe puste elementy -->
-        <div class="grid grid-cols-3 gap-4">
-            <div class="bg-white rounded-lg shadow p-4 h-40">Element 1</div>
-            <div class="bg-white rounded-lg shadow p-4 h-40">Element 2</div>
-            <div class="bg-white rounded-lg shadow p-4 h-40">Element 3</div>
+        <!-- Statystyki -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-6 rounded shadow text-center">
+                <h2 class="text-lg font-semibold">Liczba stron</h2>
+                <p class="text-3xl text-amber-600 font-bold">{{ sites_count }}</p>
+            </div>
+            <div class="bg-white p-6 rounded shadow text-center">
+                <h2 class="text-lg font-semibold">Sprawnych (200)</h2>
+                <p class="text-3xl text-green-500 font-bold">{{ success_count }}</p>
+            </div>
+            <div class="bg-white p-6 rounded shadow text-center">
+                <h2 class="text-lg font-semibold">Błędnych</h2>
+                <p class="text-3xl text-red-500 font-bold">{{ error_count }}</p>
+            </div>
+        </div>
+
+        <!-- Wykresy -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-lg font-semibold mb-4">Statusy stron</h2>
+                <canvas id="statusChart"></canvas>
+            </div>
+            <div class="bg-white p-6 rounded shadow">
+                <h2 class="text-lg font-semibold mb-4">Sprawność</h2>
+                <canvas id="healthChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Ostatnie strony -->
+        <div class="bg-white p-6 rounded shadow">
+            <h2 class="text-lg font-semibold mb-4">Ostatnio sprawdzone strony</h2>
+            <ul class="space-y-2">
+                {% for site in recent_sites %}
+                <li class="flex justify-between border-b pb-1">
+                    <span>{{ site.name }}</span>
+                    <span class="{% if site.status_code == 200 %}text-green-500{% else %}text-red-500{% endif %}">{{ site.status_code }}</span>
+                </li>
+                {% else %}
+                <p class="text-gray-500">Brak danych.</p>
+                {% endfor %}
+            </ul>
         </div>
     </main>
+</div>
 
-    <script>
-        lucide.createIcons();
-    </script>
+<!-- Ikony + Sidebar JS -->
+<script>
+    lucide.createIcons();
+
+    document.getElementById('menuToggle').addEventListener('click', () => {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('-translate-x-full');
+    });
+
+    document.querySelectorAll('#sidebar a').forEach(link => {
+        link.addEventListener('click', () => {
+            if(window.innerWidth < 768){
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+        });
+    });
+</script>
+
+<!-- Chart.js -->
+<script>
+const statusChart = new Chart(document.getElementById('statusChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ status_labels | safe }},
+        datasets: [{
+            label: 'Liczba stron',
+            data: {{ status_data | safe }},
+            backgroundColor: 'rgba(251, 191, 36, 0.8)',
+            borderRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+
+const healthChart = new Chart(document.getElementById('healthChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Sprawne', 'Niesprawne'],
+        datasets: [{
+            data: [{{ success_count }}, {{ error_count }}],
+            backgroundColor: ['#22c55e', '#ef4444']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'bottom' }
+        }
+    }
+});
+</script>
 
 </body>
 </html>

@@ -73,6 +73,9 @@ def sites():
         db.session.add(new_site)
         db.session.commit()
 
+        new_site.screenshot_path = take_screenshot(new_site.url, new_site.id)
+        db.session.commit()
+
         flash('Strona została dodana.', 'success')
         return redirect(url_for('sites.sites'))
 
