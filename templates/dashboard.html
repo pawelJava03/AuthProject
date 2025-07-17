@@ -7,10 +7,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 text-sm">
 
 <!-- Hamburger -->
-<div class="md:hidden p-4">
+<div class="md:hidden p-2">
     <button id="menuToggle" class="text-gray-700 focus:outline-none">
         <i data-lucide="menu"></i>
     </button>
@@ -18,15 +18,15 @@
 
 <div class="flex h-screen">
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-md flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:static md:inset-0 transition-transform duration-300 ease-in-out z-50 h-screen overflow-y-auto">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-56 bg-white shadow-md flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:static md:inset-0 transition-transform duration-300 ease-in-out z-50 h-screen overflow-y-auto text-sm">
         <div>
-            <div class="p-6 text-xl font-bold border-b">
-                Witaj ponownie, {{ user.username }}
+            <div class="p-4 text-lg font-bold border-b">
+                Witaj, {{ user.username }}
             </div>
-            <nav class="p-4 space-y-2">
+            <nav class="p-3 space-y-1">
                 <a href="/dashboard" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
                     <i data-lucide="layout-dashboard"></i>
-                    <span>Panel Główny</span>
+                    <span>Panel</span>
                 </a>
                 <a href="/sites" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
                     <i data-lucide="folder"></i>
@@ -38,7 +38,7 @@
                 </a>
             </nav>
         </div>
-        <div class="p-4 border-t mt-auto">
+        <div class="p-3 border-t mt-auto">
             <a href="{{ url_for('auth.logout') }}" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
                 <i data-lucide="log-out"></i>
                 <span>Wyloguj</span>
@@ -47,41 +47,26 @@
     </aside>
 
     <!-- Main content -->
-    <main class="flex-1 p-6 space-y-6 overflow-y-auto">
-        <h1 class="text-2xl font-bold">Dashboard</h1>
+    <main class="flex-1 p-4 space-y-4 overflow-y-auto">
+        <h1 class="text-xl font-bold mb-2">Dashboard</h1>
 
         <!-- Statystyki -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-6 rounded shadow text-center">
-                <h2 class="text-lg font-semibold">Liczba stron</h2>
-                <p class="text-3xl text-amber-600 font-bold">{{ sites_count }}</p>
-            </div>
-            <div class="bg-white p-6 rounded shadow text-center">
-                <h2 class="text-lg font-semibold">Sprawnych (200)</h2>
-                <p class="text-3xl text-green-500 font-bold">{{ success_count }}</p>
-            </div>
-            <div class="bg-white p-6 rounded shadow text-center">
-                <h2 class="text-lg font-semibold">Błędnych</h2>
-                <p class="text-3xl text-red-500 font-bold">{{ error_count }}</p>
-            </div>
-        </div>
-
-        <!-- Wykresy -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white p-6 rounded shadow">
-                <h2 class="text-lg font-semibold mb-4">Statusy stron</h2>
-                <canvas id="statusChart"></canvas>
-            </div>
-            <div class="bg-white p-6 rounded shadow">
-                <h2 class="text-lg font-semibold mb-4">Sprawność</h2>
-                <canvas id="healthChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Ostatnie strony -->
-        <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-lg font-semibold mb-4">Ostatnio sprawdzone strony</h2>
-            <ul class="space-y-2">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="bg-white p-3 rounded shadow text-center">
+        <h2 class="text-sm font-medium mb-1">Sprawnych (200)</h2>
+        <p class="text-xl text-green-500 font-bold">{{ success_count }}</p>
+    </div>
+    <div class="bg-white p-3 rounded shadow text-center">
+        <h2 class="text-sm font-medium mb-1">Błędnych</h2>
+        <p class="text-xl text-red-500 font-bold">{{ error_count }}</p>
+    </div>
+    <div class="bg-white p-3 rounded shadow text-center">
+        <h2 class="text-sm font-medium mb-1">Statusy stron</h2>
+        <canvas id="statusChart" class="w-full h-32"></canvas>
+    </div>
+    <div class="bg-white p-3 rounded shadow text-center">
+        <h2 class="text-sm font-semibold mb-2">Ostatnio sprawdzone strony</h2>
+            <ul class="space-y-1">
                 {% for site in recent_sites %}
                 <li class="flex justify-between border-b pb-1">
                     <span>{{ site.name }}</span>
@@ -91,19 +76,22 @@
                 <p class="text-gray-500">Brak danych.</p>
                 {% endfor %}
             </ul>
-        </div>
+    </div>
+</div>
+
+
+
+
+
     </main>
 </div>
 
-<!-- Ikony + Sidebar JS -->
+<!-- Sidebar JS + Ikony -->
 <script>
     lucide.createIcons();
-
     document.getElementById('menuToggle').addEventListener('click', () => {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('-translate-x-full');
+        document.getElementById('sidebar').classList.toggle('-translate-x-full');
     });
-
     document.querySelectorAll('#sidebar a').forEach(link => {
         link.addEventListener('click', () => {
             if(window.innerWidth < 768){
@@ -123,7 +111,7 @@ const statusChart = new Chart(document.getElementById('statusChart'), {
             label: 'Liczba stron',
             data: {{ status_data | safe }},
             backgroundColor: 'rgba(251, 191, 36, 0.8)',
-            borderRadius: 6
+            borderRadius: 4
         }]
     },
     options: {
