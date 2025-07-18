@@ -36,7 +36,7 @@ def take_screenshot(url, site_id):
     try:
         driver.set_page_load_timeout(10)  # timeout na wczytanie strony
         driver.get(url)
-        time.sleep(1)  # mniej czekania na rendering
+        time.sleep(3)  # mniej czekania na rendering
 
         screenshots_dir = 'static/screenshots'
         os.makedirs(screenshots_dir, exist_ok=True)
