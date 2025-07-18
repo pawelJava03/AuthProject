@@ -24,7 +24,7 @@ def take_screenshot(url, site_id):
     options.add_argument("--window-size=1280,800")
 
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager(version="138.0.7204.157").install()),
+        service=Service(ChromeDriverManager(driver_version="138.0.7204.157").install()),
         options=options
     )
 
