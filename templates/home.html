@@ -1,12 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-      <link rel="stylesheet" href="/static/dist/output.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoruj swoje strony | Staciwa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-<h1 class="text-3xl text-red-500 underline">Hello there</h1>
+<body class="bg-gray-50 text-gray-800">
+
+<!-- Navbar -->
+<header class="bg-white shadow">
+    <div class="container mx-auto flex justify-between items-center p-4">
+        <h1 class="text-xl font-bold text-amber-500">WP - Control</h1>
+        <nav class="space-x-4 text-sm">
+            <a href="/login" class="bg-amber-600 text-white py-2 px-4 rounded-md hover:bg-amber-700 transition">
+    Zaloguj się
+</a>
+<a href="/dashboard" class="border border-amber-600 text-amber-600 py-2 px-4 rounded-md hover:bg-amber-600 hover:text-white transition">
+    Dashboard
+</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-amber-500 to-yellow-400 text-white text-center p-12">
+    <div class="max-w-4xl mx-auto space-y-4">
+        <h2 class="text-3xl md:text-5xl font-bold">Monitoruj i analizuj swoje strony w jednym miejscu</h2>
+        <p class="text-lg pb-4">Automatyczne sprawdzanie statusu i wyglądu stron oraz AI Blog Writer dla Twojego contentu SEO.</p>
+        <a href="/register" class="bg-white text-amber-600 font-semibold px-6 py-2 rounded shadow hover:bg-gray-100 transition mt-[30px]">Rozpocznij teraz</a>
+    </div>
+</section>
+
+<!-- About -->
+<section id="about" class="container mx-auto p-8 space-y-6 text-center">
+    <h3 class="text-2xl font-bold">Dlaczego warto nam zaufać?</h3>
+    <p class="max-w-2xl mx-auto">Staciwa to narzędzie stworzone dla właścicieli stron, którzy chcą mieć pewność, że ich witryny działają poprawnie, wyglądają dobrze i są zawsze dostępne dla klientów.</p>
+</section>
+
+<!-- Features -->
+<section id="features" class="bg-white py-12">
+    <div class="container mx-auto space-y-8">
+        <h3 class="text-2xl font-bold text-center mb-4">Funkcje aplikacji</h3>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+            <div class="p-4 bg-gray-50 rounded shadow hover:shadow-lg">
+                <i data-lucide="monitor" class="mx-auto mb-2 w-8 h-8 text-amber-500"></i>
+                <h4 class="font-semibold">Monitoring Statusu</h4>
+                <p>Automatyczne sprawdzanie statusu HTTP Twoich stron co 3 godziny lub na żądanie.</p>
+            </div>
+            <div class="p-4 bg-gray-50 rounded shadow hover:shadow-lg">
+                <i data-lucide="image" class="mx-auto mb-2 w-8 h-8 text-amber-500"></i>
+                <h4 class="font-semibold">Zrzuty Ekranu</h4>
+                <p>Podgląd wyglądu strony w każdej chwili dzięki automatycznym screenshotom.</p>
+            </div>
+            <div class="p-4 bg-gray-50 rounded shadow hover:shadow-lg">
+                <i data-lucide="pen-tool" class="mx-auto mb-2 w-8 h-8 text-amber-500"></i>
+                <h4 class="font-semibold">AI Blog Writer</h4>
+                <p>Generuj tytuł SEO, grafikę oraz zoptymalizowany artykuł na dowolny temat blogowy.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonials" class="container mx-auto py-12 space-y-6 text-center">
+    <h3 class="text-2xl font-bold">Co mówią nasi użytkownicy</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+        <blockquote class="bg-white p-4 rounded shadow text-left">
+            <p>"Dzięki Staciwa mogę spać spokojnie. Moje strony są pod kontrolą, a zrzuty ekranów pokazują czy wszystko działa!"</p>
+            <footer class="mt-2 text-sm text-gray-500">— Karol, właściciel agencji</footer>
+        </blockquote>
+        <blockquote class="bg-white p-4 rounded shadow text-left">
+            <p>"AI Blog Writer to game-changer! Tematyczne obrazy i artykuły SEO w kilka minut."</p>
+            <footer class="mt-2 text-sm text-gray-500">— Anna, blogerka i marketerka</footer>
+        </blockquote>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="bg-white py-12">
+    <div class="container mx-auto text-center space-y-4">
+        <h3 class="text-2xl font-bold">Skontaktuj się z nami</h3>
+        <p>Masz pytania? Chętnie odpowiemy!</p>
+        <a href="mailto:kontakt@staciwa.dev" class="inline-block bg-amber-500 text-white px-6 py-2 rounded hover:bg-amber-600 transition">kontakt@staciwa.dev</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-gray-300 text-sm py-6">
+    <div class="container mx-auto grid md:grid-cols-4 gap-4 p-4">
+        <div>
+            <h4 class="font-bold text-white mb-2">WP - Control</h4>
+            <p>Narzędzie do monitoringu stron i tworzenia treści blogowych z pomocą AI.</p>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-2">Nawigacja</h4>
+            <ul class="space-y-1">
+                <li><a href="#about" class="hover:underline">O nas</a></li>
+                <li><a href="#features" class="hover:underline">Funkcje</a></li>
+                <li><a href="#testimonials" class="hover:underline">Opinie</a></li>
+                <li><a href="#contact" class="hover:underline">Kontakt</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-2">Konto</h4>
+            <ul class="space-y-1">
+                <li><a href="#">Zaloguj się</a></li>
+                <li><a href="#">Załóż konto</a></li>
+                <li><a href="#">Zapomniałem hasła</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-white mb-2">Social Media</h4>
+            <div class="flex space-x-3">
+                <a href="#" class="hover:text-white"><i data-lucide="facebook"></i></a>
+                <a href="#" class="hover:text-white"><i data-lucide="twitter"></i></a>
+                <a href="#" class="hover:text-white"><i data-lucide="linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center text-gray-500 text-xs mt-4">© 2025 Staciwa.dev. Wszelkie prawa zastrzeżone.</div>
+</footer>
+
+<script>
+    lucide.createIcons();
+</script>
 
 </body>
 </html>

@@ -7,56 +7,55 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+<body class="bg-gray-100 text-sm">
 
+<!-- Hamburger -->
+<div class="md:hidden p-2">
+    <button id="menuToggle" class="text-gray-700 focus:outline-none">
+        <i data-lucide="menu"></i>
+    </button>
+</div>
+
+<div class="flex h-screen">
     <!-- Sidebar -->
-    <aside class="w-full md:w-64 bg-white shadow-md flex flex-col justify-between h-screen sticky top-0 overflow-y-auto">
-    <div>
-        <div class="p-6 text-xl font-bold border-b">
-            Witaj ponownie, {{ user.username }}
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-56 bg-white shadow-md flex flex-col justify-between transform -translate-x-full md:translate-x-0 md:inset-0 transition-transform duration-300 ease-in-out z-50 h-screen overflow-y-auto text-sm">
+        <div>
+            <div class="p-4 text-lg font-bold border-b">
+                Witaj, {{ user.username }}
+            </div>
+            <nav class="p-3 space-y-1">
+                <a href="/dashboard" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Panel</span>
+                </a>
+                <a href="/sites" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                    <i data-lucide="folder"></i>
+                    <span>Twoje Strony</span>
+                </a>
+                <a href="/blog-ai" class="flex font-bold items-center space-x-2 text-orange-400 hover:text-blue-600">
+                    <i data-lucide="a-large-small"></i>
+                    <span>Blog AI</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                    <i data-lucide="settings"></i>
+                    <span>Ustawienia</span>
+                </a>
+            </nav>
         </div>
-        <nav class="p-4 space-y-2">
-            <a href="/dashboard" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-                <i data-lucide="layout-dashboard"></i>
-                <span>Panel Główny</span>
+        <div class="p-3 border-t mt-auto">
+            <a href="{{ url_for('auth.logout') }}" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
+                <i data-lucide="log-out"></i>
+                <span>Wyloguj</span>
             </a>
-            <a href="/sites" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-                <i data-lucide="folder"></i>
-                <span>Twoje Strony</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
-                <i data-lucide="settings"></i>
-                <span>Ustawienia</span>
-            </a>
-        </nav>
-    </div>
-    <div class="p-4 border-t mt-auto">
-        <a href="{{ url_for('auth.logout') }}" class="flex items-center space-x-2 text-red-600 hover:text-red-800">
-            <i data-lucide="log-out"></i>
-            <span>Wyloguj</span>
-        </a>
-    </div>
-</aside>
+        </div>
+    </aside>
+
 
 
     <!-- Main content -->
-    <main class="flex-1 p-4 md:p-8">
+    <main class="flex-1 p-4 md:p-8 md:ml-56">
         <h1 class="text-2xl font-bold mb-6">Twoje Strony</h1>
 
-        <!-- Flash messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="mb-4 p-4 rounded text-white
-                  {% if category == 'success' %} bg-green-500
-                  {% elif category == 'info' %} bg-blue-500
-                  {% elif category == 'danger' %} bg-red-500
-                  {% else %} bg-gray-500 {% endif %}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
 
         <!-- Formularz dodawania nowej strony -->
         <form method="POST" action="/sites" onsubmit="return handleAddSite()" class="bg-white p-6 rounded shadow mb-6 max-w-xl">
@@ -131,9 +130,29 @@
             {% endfor %}
         </div>
     </main>
+</div>
+    <!-- Sidebar JS + Ikony -->
+<script>
+    lucide.createIcons();
 
-    <script>
-        lucide.createIcons();
+    document.getElementById('menuToggle').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('-translate-x-full');
+    });
+
+    document.querySelectorAll('#sidebar a').forEach(link => {
+        link.addEventListener('click', () => {
+            if(window.innerWidth < 768){
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+        });
+    });
+
+    function copyText(elementId) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Skopiowano!');
+        });
+    }
     </script>
     <script>
     function handleRefresh(button) {
@@ -195,7 +214,7 @@
         }
 
         nextStep();
-        return true; // pozwala formularzowi się wysłać
+        return true;
     }
 </script>
 

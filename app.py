@@ -7,12 +7,12 @@ from models import User, Site
 from auth import auth_bp
 from sites import sites_bp
 from dashboard import dashboard_bp
+from blog import blog_bp
 
 
 def create_app():
     app = Flask(__name__)
 
-    # Klucz do sesji i flask-login
     app.config.from_object(Config)
 
     db.init_app(app)
@@ -22,6 +22,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(sites_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(blog_bp)
 
     @login_manager.user_loader
     def load_user(user_id):

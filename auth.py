@@ -45,7 +45,7 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             flash('Zalogowano pomyślnie', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('dashboard.dashboard'))
         else:
             flash('Błędne dane logowania', 'danger')
             return redirect(url_for('auth.login'))
