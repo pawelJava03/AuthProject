@@ -15,13 +15,15 @@ sites_bp = Blueprint('sites', __name__)
 def take_screenshot(url, site_id):
     options = Options()
     options.binary_location = '/snap/bin/chromium'
-    options.add_argument("--headless")
+    options.add_argument("--headless=new")  # nowy tryb headless, szybszy i mniej zasobożerny
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-infobars")
-    options.add_argument("--window-size=1280,800")
+    options.add_argument("--hide-scrollbars")  # ukrywa scrollbary
+    options.add_argument("--blink-settings=imagesEnabled=false")  # NIE ładuje obrazów
+    options.add_argument("--window-size=800,600")  # zmniejszona rozdzielczość dla mniejszego pliku
 
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager(driver_version="138.0.7204.157").install()),
@@ -29,9 +31,9 @@ def take_screenshot(url, site_id):
     )
 
     try:
-        driver.set_window_size(1280, 800)
+        driver.set_page_load_timeout(10)  # timeout na wczytanie strony
         driver.get(url)
-        time.sleep(2)
+        time.sleep(1)  # mniej czekania na rendering
 
         screenshots_dir = 'static/screenshots'
         os.makedirs(screenshots_dir, exist_ok=True)
@@ -44,6 +46,7 @@ def take_screenshot(url, site_id):
         return None
     finally:
         driver.quit()
+
 
 def check_site_status(url):
     try:
