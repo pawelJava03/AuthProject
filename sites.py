@@ -34,7 +34,8 @@ def take_screenshot(url, site_id):
     )
 
     try:
-        driver.set_page_load_timeout(10)  # timeout na wczytanie strony
+        driver.set_page_load_timeout(10)
+        driver.set_window_size(1920, 1080)
         driver.get(url)
         time.sleep(3)  # mniej czekania na rendering
 
