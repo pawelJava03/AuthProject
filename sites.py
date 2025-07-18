@@ -14,10 +14,8 @@ import time
 sites_bp = Blueprint('sites', __name__)
 def take_screenshot(url, site_id):
     options = Options()
-    options.headless = True
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--headless=new")
+    options.binary_location = '/snap/bin/chromium'
+    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
